@@ -1,5 +1,6 @@
 const Razorpay = require("razorpay");
 const shortid = require("shortid");
+import { slugPrice } from "../product/[slug]";
 
 export default async function handler(req, res) {
   if (req.method === "POST") {
@@ -12,7 +13,7 @@ export default async function handler(req, res) {
     // Create an order -> generate the OrderID -> Send it to the Front-end
     // Also, check the amount and currency on the backend (Security measure)
     const payment_capture = 1;
-    const amount = 499;
+    const amount = parseInt(slugPrice);
     const currency = "INR";
     const options = {
       amount: (amount * 100).toString(),
@@ -29,7 +30,10 @@ export default async function handler(req, res) {
         amount: response.amount,
       });
     } catch (err) {
+      console.log("ok Google");
       console.log(err);
+      console.log(err.message);
+
       res.status(400).json(err);
     }
   } else {
